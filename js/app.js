@@ -22,6 +22,11 @@ let tasks = [
   },
 ]
 
+taskLists.forEach(taskList => {
+  taskList.addEventListener('dragover', dragOver)
+  taskList.addEventListener('drop', dragDrop)
+})
+
 function createTask(taskId, title, description) {
   const taskCard = document.createElement('div')
   const taskHeader = document.createElement('div')
@@ -38,10 +43,38 @@ function createTask(taskId, title, description) {
   taskDescription.textContent = description
   deleteIcon.textContent = '☒'
 
+  taskCard.setAttribute('draggable', true)
+  taskCard.setAttribute('task-id', taskId)
+
+  taskCard.addEventListener('dragstart', dragStart)
+
   taskHeader.append(taskTitle, deleteIcon)
   taskDescriptionContainer.append(taskDescription)
   taskCard.append(taskHeader, taskDescriptionContainer)
   backlogTasks.append(taskCard)
+}
+
+function addColor(column) {
+  let color
+  switch (column) {
+    case 'backlog':
+      color = 'rgb(96, 96, 192)'
+      break
+    case 'doing':
+      color = 'rgb(83, 156, 174)'
+      break
+    case 'done':
+      color = 'rgb(224, 165, 116)'
+      break
+    case 'discard':
+      color = 'rgb(222, 208, 130)'
+      break
+
+    default:
+      color = 'rgb(232, 232, 232)'
+      break
+  }
+  return color
 }
 
 function addTasks() {
@@ -51,3 +84,22 @@ function addTasks() {
 }
 
 addTasks()
+
+let elementBeingDragged
+
+function dragStart() {
+  console.log(this)
+  elementBeingDragged = this
+}
+
+function dragOver(e) {
+  e.preventDefault()
+}
+
+function dragDrop() {
+  const columnId = this.parentNode.id
+  console.log(elementBeingDragged.firstChild)
+  elementBeingDragged.firstChild.style.backgroundColor =
+    addColor(columnId)
+  this.append(elementBeingDragged)
+}
