@@ -106,3 +106,16 @@ header .input-container .fields {
   padding: 10px;
   color: rgb(78, 78, 78);
 }
+
+.error-container {
+  height: 30px;
+}
+
+.error-message {
+  text-align: center;
+  margin: 30px;
+  background-color: rgb(143, 29, 29);
+  border-radius: 10px;
+  padding: 10px 20px;
+  color: rgb(255, 255, 255);
+}
